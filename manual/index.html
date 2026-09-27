@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<title>DAMI – Dizajn manuál</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
+<style>
+  @page { size: 297mm 210mm; margin: 0; }
+  :root { --ink: #0b0b0c; --red: #e3151d; --paper: #f6f5f2; --grey: #6b6e73; --line: #dedbd4; --f: "Inter Tight", Arial, sans-serif; --s: "Nothing You Could Do", cursive; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #777; font-family: var(--f); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pg { width: 297mm; height: 210mm; position: relative; overflow: hidden; background: var(--paper); page-break-after: always; break-after: page; margin: 0 auto 6mm; }
+  @media print { .pg { margin: 0; } html, body { background: none; } }
+  .in { position: absolute; inset: 16mm 18mm 15mm; display: flex; flex-direction: column; }
+  .in.mid { justify-content: center; }
+  .row2 { margin-top: 5mm; }
+  .dark { background: var(--ink); color: #fff; }
+  .redbg { background: var(--red); color: #fff; }
+  .foot { position: absolute; left: 18mm; right: 18mm; bottom: 7mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--grey); letter-spacing: .02em; }
+  .dark .foot, .redbg .foot { color: rgba(255,255,255,.55); }
+  .eb { font-size: 8pt; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--red); }
+  .dark .eb, .redbg .eb { color: #ff5a60; }
+  .redbg .eb { color: #fff; opacity: .8; }
+  h1 { font-weight: 900; letter-spacing: -.04em; line-height: .92; }
+  h2 { font-size: 30pt; font-weight: 800; letter-spacing: -.035em; line-height: .98; margin: 3mm 0 5mm; }
+  h2 em, h1 em { font-style: normal; color: var(--red); }
+  .dark h2 em { color: #ff5a60; }
+  h3 { font-size: 12pt; font-weight: 800; letter-spacing: -.015em; margin-bottom: 2mm; }
+  p { font-size: 9.6pt; line-height: 1.55; color: #33353a; }
+  .dark p { color: #cfd2d6; }
+  .lead { font-size: 12pt; line-height: 1.5; color: #222; }
+  .dark .lead { color: #e2e4e7; }
+  b, strong { font-weight: 700; color: inherit; }
+  .num { position: absolute; top: 14mm; right: 18mm; font-size: 8pt; font-weight: 700; color: var(--grey); }
+  .dark .num { color: rgba(255,255,255,.4); }
+  .cols { display: grid; gap: 8mm; }
+  .c2 { grid-template-columns: 1fr 1fr; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .card { background: #fff; border-radius: 3mm; padding: 5mm; }
+  .dark .card { background: #17181b; }
+  .post { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 1.5mm; display: block; }
+  .cap { font-size: 7.5pt; color: var(--grey); margin-top: 1.6mm; line-height: 1.3; }
+  .dark .cap { color: #9a9ea4; }
+  .script { font-family: var(--s); font-weight: 400; }
+  .rule { height: 1.2mm; width: 18mm; background: var(--red); border-radius: 1mm; margin: 4mm 0; }
+  .tag { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 1mm 2.4mm; border-radius: 99px; background: var(--ink); color: #fff; }
+  .ok, .no { font-size: 9pt; line-height: 1.5; display: grid; gap: 2mm; }
+  .ok li, .no li { list-style: none; padding-left: 6mm; position: relative; }
+  .ok li::before { content: "✓"; position: absolute; left: 0; color: #1f9d4c; font-weight: 800; }
+  .no li::before { content: "✕"; position: absolute; left: 0; color: var(--red); font-weight: 800; }
+  .sw { border-radius: 3mm; height: 44mm; padding: 4mm; display: flex; flex-direction: column; justify-content: flex-end; font-size: 8pt; line-height: 1.45; }
+  .sw b { font-size: 12pt; display: block; margin-bottom: 1mm; }
+  .shot { width: 100%; display: block; border-radius: 2mm; box-shadow: 0 3mm 9mm rgba(0,0,0,.18); }
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2mm 14mm; margin-top: 6mm; }
+  .toc div { display: flex; justify-content: space-between; border-bottom: .3mm solid var(--line); padding: 2.2mm 0; font-size: 10.5pt; font-weight: 600; }
+  .toc span { color: var(--grey); font-weight: 500; }
+  .toc i { font-style: normal; color: var(--red); margin-right: 4mm; font-weight: 800; }
+  .big-q { font-size: 20pt; line-height: 1.25; font-weight: 700; letter-spacing: -.02em; }
+  .logo-box { border-radius: 3mm; display: grid; place-items: center; height: 58mm; }
+  .logo-box img { max-width: 62%; max-height: 70%; }
+  .clear { position: relative; display: inline-block; padding: 12mm; border: .4mm dashed var(--red); }
+  .clear::after { content: "x"; position: absolute; top: 3mm; left: 50%; transform: translateX(-50%); font-size: 8pt; color: var(--red); font-weight: 700; }
+  .clear img { height: 42mm; display: block; outline: .3mm solid rgba(227,21,29,.35); }
+  .bad { position: relative; height: 34mm; border-radius: 3mm; display: grid; place-items: center; overflow: hidden; background: #fff; }
+  .bad img { max-height: 70%; max-width: 70%; }
+  .bad::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - .5mm), var(--red) calc(50% - .5mm), var(--red) calc(50% + .5mm), transparent calc(50% + .5mm)); opacity: .85; }
+  .type-sample { font-size: 60pt; font-weight: 900; letter-spacing: -.04em; line-height: .95; }
+  .weights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-top: 5mm; }
+  .weights div { background: #fff; border-radius: 2mm; padding: 6mm 4mm; font-size: 26pt; }
+  .weights small { display: block; font-size: 7.5pt; color: var(--grey); margin-top: 2mm; font-weight: 500; }
+  .icons { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4mm; }
+  .icons div { text-align: center; font-size: 8pt; font-weight: 700; }
+  .icons i { display: grid; place-items: center; width: 17mm; height: 17mm; border-radius: 50%; background: var(--red); margin: 0 auto 2mm; }
+  .icons svg { width: 8mm; height: 8mm; fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .kpi { background: #17181b; border-radius: 3mm; padding: 5mm; }
+  .kpi b { display: block; font-size: 26pt; font-weight: 900; letter-spacing: -.03em; color: #fff; line-height: 1; }
+  .kpi span { font-size: 8.5pt; color: #b5b9be; }
+  .steps { display: grid; gap: 3mm; }
+  .steps div { display: grid; grid-template-columns: 9mm 1fr; gap: 3mm; font-size: 9pt; line-height: 1.45; color: #cfd2d6; }
+  .steps i { font-style: normal; width: 7mm; height: 7mm; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 8pt; }
+</style>
+</head>
+<body>
+
+<!-- 1 · OBÁLKA -->
+<section class="pg dark">
+  <div class="in" style="justify-content:space-between">
+    <img src="a/logo-white.png" style="width:40mm" alt="DAMI">
+    <div>
+      <div class="eb">Dizajn manuál · 2026</div>
+      <h1 style="font-size:70pt;margin-top:5mm">Oblečenie,<br><em style="color:#ff5a60">čo maká.</em></h1>
+      <p class="lead" style="margin-top:7mm;max-width:150mm">Filozofia značky, logo a brandový prvok D, farby, písmo, sociálne siete a web DAMI pracovné odevy.</p>
+    </div>
+  </div>
+  <img src="a/d-red.png" style="position:absolute;right:22mm;bottom:22mm;width:78mm" alt="">
+  <div class="foot"><span>DAMI pracovné odevy · Gaštanová 6396, Piešťany</span><span>dami-pracovne-odevy.sk</span></div>
+</section>
+
+<!-- 2 · OBSAH -->
+<section class="pg">
+  <div class="in">
+    <div class="eb">Obsah</div>
+    <h2>Čo nájdete v manuáli</h2>
+    <div class="toc">
+      <div><span><i>01</i>Príbeh a filozofia</span><span>3</span></div>
+      <div><span><i>07</i>Farby</span><span>13</span></div>
+      <div><span><i>02</i>Piliere komunikácie</span><span>5</span></div>
+      <div><span><i>08</i>Typografia</span><span>14</span></div>
+      <div><span><i>03</i>Hlas značky</span><span>6</span></div>
+      <div><span><i>09</i>Pattern, ikony a fotografia</span><span>15</span></div>
+      <div><span><i>04</i>Logo</span><span>7</span></div>
+      <div><span><i>10</i>Sociálne siete</span><span>17</span></div>
+      <div><span><i>05</i>Pravidlá používania loga</span><span>9</span></div>
+      <div><span><i>11</i>Web</span><span>21</span></div>
+      <div><span><i>06</i>Brandový prvok D s rukou</span><span>10</span></div>
+      <div><span><i>12</i>Merch a aplikácie</span><span>23</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>2</span></div>
+</section>
+
+<!-- 3 · PRÍBEH -->
+<section class="pg dark">
+  <div class="in" style="display:grid;grid-template-columns:1.25fr 1fr;gap:12mm;align-items:center">
+    <div>
+      <div class="eb">01 · Príbeh a filozofia</div>
+      <h2 style="font-size:34pt">Mesto oddychu stojí na ľuďoch, <em>ktorí makajú.</em></h2>
+      <p class="lead">Piešťany pozná celé Slovensko ako miesto, kam sa chodí oddýchnuť a dať sa dokopy. Symbolom mesta je <b>Barlolamač</b> – človek, ktorý zlomí barlu a vráti sa do života.</p>
+      <p style="margin-top:4mm">Za každým kúpeľným pobytom, obedom na kolonáde a vyžehleným obrusom však stoja ľudia, ktorých návštevníci nevidia: <b>kuchári v hotelových kuchyniach, sestry a maséri v kúpeľoch, upratovačky, údržbári, murári, šoféri a skladníci</b>. Oni držia mesto v chode – a DAMI ich oblieka.</p>
+      <p style="margin-top:4mm">Ruka so zdvihnutými prstami v logu nie je póza. Je to <b>víťazstvo po dobre odvedenej smene</b>. Padla.</p>
+    </div>
+    <div class="cols c2" style="gap:4mm">
+      <img class="post" src="a/p-1-10-1.jpg" alt=""><img class="post" src="a/p-2-02-3.jpg" alt="">
+      <img class="post" src="a/p-2-04-3.jpg" alt=""><img class="post" src="a/p-3-10-3.jpg" alt="">
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>3</span></div>
+</section>
+
+<!-- 4 · MYŠLIENKA -->
+<section class="pg redbg">
+  <img src="a/d-white.png" style="position:absolute;right:-14mm;bottom:-20mm;width:130mm;opacity:.16" alt="">
+  <div class="in" style="justify-content:center;max-width:210mm">
+    <div class="eb">Hlavná myšlienka</div>
+    <p class="big-q" style="color:#fff;font-size:28pt;margin-top:6mm">„Oblečenie, čo maká“ nie je slogan o látke. Je to poďakovanie ľuďom, na ktorých stojí každý deň – a sľub, že ich výbava vydrží rovnako ako oni.</p>
+    <div class="rule" style="background:#fff"></div>
+    <div class="cols c3" style="gap:8mm;margin-top:4mm">
+      <div><h3 style="color:#fff">Poslanie</h3><p style="color:#ffe3e4">Obliekať ľudí, ktorí pracujú rukami, do oblečenia, ktoré vydrží celú smenu – s osobnou radou a poctivým prístupom.</p></div>
+      <div><h3 style="color:#fff">Pre koho</h3><p style="color:#ffe3e4">Gastro, zdravotníctvo a wellness, remeslo, priemysel a sklady. Jednotlivci aj celé prevádzky z Piešťan a okolia.</p></div>
+      <div><h3 style="color:#fff">Prečo DAMI</h3><p style="color:#ffe3e4">Rodinná predajňa, kde si veľkosť vyskúšate naživo, overené značky a oblečenie aj s logom vašej firmy.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>4</span></div>
+</section>
+
+<!-- 5 · PILIERE -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">02 · Piliere komunikácie</div>
+    <h2>Päť tém, z ktorých je postavený každý post</h2>
+    <div class="cols c5" style="gap:5mm">
+      <div><img class="post" src="a/p-1-08-3.jpg" alt=""><h3 style="margin-top:3mm">01 · Tí, ktorých nevidno</h3><p style="font-size:9.4pt">Hrdinami nie sú modelky, ale profesie – kuchár, sestra, mechanik, skladník.</p></div>
+      <div><img class="post" src="a/p-2-05-1.jpg" alt=""><h3 style="margin-top:3mm">02 · Deň, ako ho poznajú</h3><p style="font-size:9.4pt">Nástup 6:00, obed, padla. Jazyk zákazníkov, nie reklamy.</p></div>
+      <div><img class="post" src="a/p-1-01-1.jpg" alt=""><h3 style="margin-top:3mm">03 · Lokálne a poctivo</h3><p style="font-size:9.4pt">Kolonáda, Váh a predajňa na Gaštanovej. Rodinný obchod z mesta.</p></div>
+      <div><img class="post" src="a/p-V-14.jpg" alt=""><h3 style="margin-top:3mm">04 · Malý detail, silná značka</h3><p style="font-size:9.4pt">Nášivka D, gombík, šev. Kvalita bez veľkých slov.</p></div>
+      <div><img class="post" src="a/p-2-04-2.jpg" alt=""><h3 style="margin-top:3mm">05 · Od kusu po celý tím</h3><p style="font-size:9.4pt">Jednotné oblečenie s logom pre hotely, reštaurácie a firmy.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>5</span></div>
+</section>
+
+<!-- 6 · HLAS -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">03 · Hlas značky</div>
+    <h2>Hovoríme ako kolega z prevádzky, <em>nie ako reklama.</em></h2>
+    <div class="cols c3" style="gap:8mm">
+      <div class="card" style="padding:7mm">
+        <h3>Slogany</h3>
+        <p style="font-size:15pt;font-weight:800;color:var(--ink);line-height:1.2;letter-spacing:-.02em">Oblečenie, čo maká.</p>
+        <p class="script" style="font-size:17pt;color:var(--ink);margin:2mm 0">Profesionáli nosia DAMI.</p>
+        <p style="font-size:10.5pt;font-weight:700;color:var(--ink)">Malý detail, silná značka.</p>
+        <p style="font-size:10.5pt;font-weight:700;color:var(--ink)">Oblečenie do práce, ktoré vydrží.</p>
+        <p style="font-size:10.5pt;font-weight:700;color:var(--ink)">Od jedného kusu po celý tím.</p>
+      </div>
+      <div class="card" style="padding:7mm">
+        <h3>Takto áno</h3>
+        <ul class="ok" style="font-size:10.5pt;gap:3mm">
+          <li>Krátke vety, bodka na konci nadpisu.</li>
+          <li>Slová z práce: smena, padla, fajront, robota.</li>
+          <li>Konkrétne: veľkosť, norma, cena, adresa.</li>
+          <li>Vykanie v textoch, tykanie v nadpisoch povolené („Vyberieš si naživo“).</li>
+          <li>Hrdosť na prácu, nie ľútosť.</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:7mm">
+        <h3>Takto nie</h3>
+        <ul class="no" style="font-size:10.5pt;gap:3mm">
+          <li>Prázdne superlatívy („najlepší“, „revolučný“).</li>
+          <li>Anglické buzzwordy a korporátny jazyk.</li>
+          <li>Vymyslené parametre a sľuby.</li>
+          <li>Výkričníky a emoji v nadpisoch.</li>
+          <li>Posmešky z práce alebo z povolaní.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>6</span></div>
+</section>
+
+<!-- 7 · LOGO -->
+<section class="pg">
+  <div class="in" style="display:grid;grid-template-columns:1fr 1fr;gap:12mm;align-items:center">
+    <div>
+      <div class="eb">04 · Logo</div>
+      <h2>Ruka, ktorá hovorí za všetkých</h2>
+      <p>Logo tvorí <b>znak ruky v pracovnej rukavici</b> s dvoma zdvihnutými prstami a nápis <b>DAMI · PRACOVNÉ ODEVY</b>. Gesto znamená víťazstvo a pokoj po dobre odvedenej robote – zároveň je priateľské a ľahko zapamätateľné.</p>
+      <p style="margin-top:4mm">Logo sa používa vždy celé a v pôvodných proporciách. Na malých plochách (ikona profilu, nášivka) ho nahrádza samostatný <b>brandový prvok D s rukou</b>.</p>
+    </div>
+    <div class="logo-box" style="background:#fff;height:120mm"><img src="a/logo-color.png" style="max-width:75%" alt="Logo DAMI"></div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>7</span></div>
+</section>
+
+<!-- 8 · VARIANTY LOGA -->
+<section class="pg">
+  <div class="in">
+    <div class="eb">04 · Logo</div>
+    <h2>Varianty loga</h2>
+    <div class="cols c4" style="gap:5mm">
+      <div><div class="logo-box" style="background:#fff"><img src="a/logo-color.png" alt=""></div><p class="cap"><b>Farebné</b> – hlavná verzia na bielom a svetlom pozadí.</p></div>
+      <div><div class="logo-box" style="background:var(--paper);border:.3mm solid var(--line)"><img src="a/logo-black.png" alt=""></div><p class="cap"><b>Čierne</b> – jednofarebná tlač, pečiatky, faktúry.</p></div>
+      <div><div class="logo-box" style="background:var(--ink)"><img src="a/logo-white.png" alt=""></div><p class="cap"><b>Biele na čiernej</b> – web, tmavé fotky, výšivka.</p></div>
+      <div><div class="logo-box" style="background:var(--red)"><img src="a/logo-white.png" alt=""></div><p class="cap"><b>Biele na červenej</b> – plagáty, tašky, výrazné plochy.</p></div>
+    </div>
+    <div class="cols c4" style="gap:5mm;margin-top:6mm">
+      <div><div class="logo-box" style="background:#fff;height:34mm"><img src="a/logo-color.png" style="max-height:60%" alt=""></div><p class="cap">Hlavička webu – svetlá</p></div>
+      <div><div class="logo-box" style="background:var(--ink);height:34mm"><img src="a/logo-white.png" style="max-height:60%" alt=""></div><p class="cap">Hlavička webu – tmavá</p></div>
+      <div><div class="logo-box" style="background:#fff;height:34mm;border-radius:50%;width:34mm;margin:auto"><img src="a/d-red.png" style="max-height:62%;margin-left:3mm" alt=""></div><p class="cap" style="text-align:center">Ikona profilu – prvok D</p></div>
+      <div><div class="logo-box" style="background:#2b2d31;height:34mm"><img src="a/logo-white.png" style="max-height:45%;opacity:.9" alt=""></div><p class="cap">Výšivka / potlač na oblečení</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>8</span></div>
+</section>
+
+<!-- 9 · PRAVIDLÁ -->
+<section class="pg">
+  <div class="in">
+    <div class="eb">05 · Pravidlá používania loga</div>
+    <h2>Ochranná zóna a nesprávne použitie</h2>
+    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:12mm">
+      <div>
+        <div class="clear"><img src="a/logo-color.png" alt=""></div>
+        <p style="margin-top:5mm"><b>Ochranná zóna</b> okolo loga je aspoň <b>x = výška písmena D v nápise DAMI</b>. Do nej nezasahuje text, okraj ani iná grafika.</p>
+        <p style="margin-top:2mm"><b>Minimálna veľkosť:</b> 20 mm / 90 px na šírku. Pod touto veľkosťou použite prvok D.</p>
+      </div>
+      <div class="cols c3" style="gap:4mm;align-content:start">
+        <div><div class="bad"><img src="a/logo-color.png" style="transform:scaleX(1.5)" alt=""></div><p class="cap">Nedeformovať</p></div>
+        <div><div class="bad"><img src="a/logo-color.png" style="transform:rotate(-18deg)" alt=""></div><p class="cap">Neotáčať</p></div>
+        <div><div class="bad"><img src="a/logo-color.png" style="filter:hue-rotate(160deg) saturate(2)" alt=""></div><p class="cap">Nemeniť farby</p></div>
+        <div><div class="bad" style="background:url(a/pattern.jpg) center/cover"><img src="a/logo-color.png" alt=""></div><p class="cap">Nedávať na rušné pozadie</p></div>
+        <div><div class="bad" style="background:var(--red)"><img src="a/logo-color.png" alt=""></div><p class="cap">Farebné logo na červenú</p></div>
+        <div><div class="bad"><img src="a/logo-color.png" style="filter:drop-shadow(2mm 2mm 1mm rgba(0,0,0,.6))" alt=""></div><p class="cap">Bez tieňov a efektov</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>9</span></div>
+</section>
+
+<!-- 10 · PRVOK D -->
+<section class="pg dark">
+  <div class="in" style="display:grid;grid-template-columns:1fr 1.1fr;gap:12mm;align-items:center">
+    <div>
+      <div class="eb">06 · Brandový prvok D s rukou</div>
+      <h2>D, ktoré si ľudia zapamätajú</h2>
+      <p>Písmeno <b>D</b> s rovnou ľavou stranou a oblou pravou nesie ruku z loga. Je to najsilnejší rozpoznávací znak DAMI – funguje aj bez nápisu, v malej veľkosti aj ako nášivka.</p>
+      <p style="margin-top:4mm"><b>Použitie:</b> ikona profilu, nášivka na oblečení, pattern, nálepky, visačky, favicon, pečiatka, lepiaca páska.</p>
+      <p style="margin-top:4mm"><b>Pravidlo striedmosti:</b> v jednej kompozícii je D dominantné maximálne raz. Na sociálnych sieťach nech tvorí najviac tretinu postov – zvyšok patrí ľuďom, práci a produktom.</p>
+    </div>
+    <img src="a/d-red.png" style="width:100%;max-width:120mm;justify-self:center" alt="Prvok D">
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>10</span></div>
+</section>
+
+<!-- 11 · VARIANTY D -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">06 · Brandový prvok D s rukou</div>
+    <h2>Varianty prvku D</h2>
+    <div class="cols c4" style="gap:5mm">
+      <div><div class="logo-box" style="background:#fff;height:62mm"><img src="a/d-red.png" alt=""></div><p class="cap"><b>Červené D</b> – hlavná verzia.</p></div>
+      <div><div class="logo-box" style="background:var(--red);height:62mm"><img src="a/d-white.png" alt=""></div><p class="cap"><b>Biele D</b> – na červenej ploche.</p></div>
+      <div><div class="logo-box" style="background:var(--paper);border:.3mm solid var(--line);height:62mm"><img src="a/d-black.png" alt=""></div><p class="cap"><b>Čierne D</b> – jednofarebná tlač.</p></div>
+      <div><div class="logo-box" style="background:#fff;height:62mm"><img src="a/d-mono-cut.png" alt=""></div><p class="cap"><b>Výsek</b> – pečiatka, laser, gravírovanie.</p></div>
+    </div>
+    <div class="eb" style="margin-top:7mm;color:var(--grey)">D v aplikácii</div>
+    <div class="cols c5" style="gap:4mm;margin-top:3mm">
+      <img class="post" src="a/p-3-01-3.jpg" alt=""><img class="post" src="a/p-V-11.jpg" alt=""><img class="post" src="a/p-2-05-3.jpg" alt=""><img class="post" src="a/p-V-13.jpg" alt=""><img class="post" src="a/p-V-15.jpg" alt="">
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>11</span></div>
+</section>
+
+<!-- 12 · D PATTERN (celá strana) -->
+<section class="pg" style="background:url(a/pattern.jpg) center/cover">
+  <div class="in" style="justify-content:flex-end">
+    <div style="background:#fff;border-radius:4mm;padding:7mm 8mm;max-width:130mm;box-shadow:0 4mm 14mm rgba(0,0,0,.15)">
+      <div class="eb">06 · Pattern</div>
+      <h2 style="font-size:24pt;margin-bottom:3mm">Pattern z prvku D</h2>
+      <p>Opakujúce sa D pootočené o −12° na papierovom pozadí. Používa sa na baliaci papier, lepiacu pásku, tašky, pozadia postov a nálepky. Pattern je vždy pozadie – nikdy nesúťaží s nadpisom.</p>
+    </div>
+  </div>
+  <div class="foot" style="color:#555"><span>DAMI · Dizajn manuál</span><span>12</span></div>
+</section>
+
+<!-- 13 · FARBY -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">07 · Farby</div>
+    <h2>Tri farby, jasné poradie</h2>
+    <div style="display:grid;grid-template-columns:2fr 1.3fr 1.3fr .9fr;gap:4mm">
+      <div class="sw" style="background:var(--ink);color:#fff;height:100mm"><b>Pracovná čierna</b>HEX #0B0B0C<br>RGB 11 11 12<br>CMYK 70 60 60 90<br><span style="opacity:.6">Hlavná farba – pozadia, text, oblečenie.</span></div>
+      <div class="sw" style="background:var(--red);color:#fff;height:100mm"><b>Signálna červená</b>HEX #E3151D<br>RGB 227 21 29<br>CMYK 0 100 95 0<br><span style="opacity:.8">Akcent – D, výzvy, dôležité slovo.</span></div>
+      <div class="sw" style="background:var(--paper);border:.3mm solid var(--line);height:100mm"><b>Papier</b>HEX #F6F5F2<br>RGB 246 245 242<br>CMYK 2 2 4 0<br><span style="color:var(--grey)">Svetlé pozadie webu a postov.</span></div>
+      <div class="sw" style="background:#fff;border:.3mm solid var(--line);height:100mm"><b>Biela</b>HEX #FFFFFF<br><span style="color:var(--grey)">Karty, text na tmavom.</span></div>
+    </div>
+    <div style="display:flex;height:9mm;margin-top:7mm;border-radius:2mm;overflow:hidden">
+      <div style="flex:55;background:var(--ink)"></div><div style="flex:30;background:var(--paper)"></div><div style="flex:10;background:var(--red)"></div><div style="flex:5;background:#fff"></div>
+    </div>
+    <p class="cap" style="margin-top:2mm">Približný pomer v komunikácii: čierna 55 % · papier 30 % · červená 10 % · biela 5 %. Červená je vzácna – preto svieti. CMYK hodnoty overiť nátlakom u tlačiarne.</p>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>13</span></div>
+</section>
+
+<!-- 14 · TYPOGRAFIA -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">08 · Typografia</div>
+    <h2>Grotesk, ktorý drží, a rukopis, ktorý podpisuje</h2>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:10mm">
+      <div>
+        <p class="cap" style="margin:0 0 2mm">Hlavné písmo · Inter Tight (Google Fonts, zadarmo)</p>
+        <div class="type-sample">Oblečenie,<br><span style="color:var(--red)">čo maká.</span></div>
+        <div class="weights">
+          <div style="font-weight:400">Aa<small>Regular 400 – text</small></div>
+          <div style="font-weight:600">Aa<small>SemiBold 600 – tlačidlá</small></div>
+          <div style="font-weight:800">Aa<small>ExtraBold 800 – nadpisy</small></div>
+          <div style="font-weight:900">Aa<small>Black 900 – kampane</small></div>
+        </div>
+      </div>
+      <div>
+        <p class="cap" style="margin:0 0 2mm">Doplnkové písmo · Nothing You Could Do</p>
+        <div class="script" style="font-size:30pt;line-height:1.25;transform:rotate(-8deg);margin:6mm 0 10mm">Profesionáli<br>nosia DAMI.</div>
+        <ul class="ok" style="margin-top:4mm">
+          <li>Nadpisy: ExtraBold, tesné riadkovanie, bodka na konci.</li>
+          <li>Jedno slovo v nadpise môže byť červené.</li>
+          <li>Rukopis len na podpis – max. jeden na plochu.</li>
+          <li>Text: Regular 9–11 pt, riadkovanie 150 %.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>14</span></div>
+</section>
+
+<!-- 15 · IKONY + FOTO -->
+<section class="pg">
+  <div class="in">
+    <div class="eb">09 · Ikony</div>
+    <h2 style="font-size:22pt">Ikony a highlighty</h2>
+    <div class="icons">
+      <div><i><svg viewBox="0 0 24 24"><path d="M6.5 13.5a4 4 0 1 1 1.6-7.7 4.5 4.5 0 0 1 7.8 0 4 4 0 1 1 1.6 7.7V19h-11z"/><path d="M6.5 16h11"/></svg></i>Gastro</div>
+      <div><i><svg viewBox="0 0 24 24"><path d="M9.5 3.5h5v6h6v5h-6v6h-5v-6h-6v-5h6z"/></svg></i>Zdravotníctvo</div>
+      <div><i><svg viewBox="0 0 24 24"><path d="M5 4.5h6v7.5l7.5 2.5c1.5.5 2.5 1.8 2.5 3.3V19H3.5z"/><path d="M3.5 16h17.5"/></svg></i>Obuv</div>
+      <div><i><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.8-3.3 3.2-5 6-5s5.2 1.7 6 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.5 14.3c2.4.2 4 1.7 4.6 4.2"/></svg></i>Pre firmy</div>
+      <div><i><svg viewBox="0 0 24 24"><path d="M3.5 9.5 5 4.5h14l1.5 5"/><path d="M3.5 9.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5c0 1.4 1.1 2.5 2.5 2.5h2c1.4 0 2.5-1.1 2.5-2.5 0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5"/><path d="M5 12v8.5h14V12M10 20.5v-5h4v5"/></svg></i>Predajňa</div>
+      <div><i><svg viewBox="0 0 24 24"><path d="M3.5 12.3V4.5c0-.6.4-1 1-1h7.8l8.2 8.2a1.4 1.4 0 0 1 0 2l-6.8 6.8a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.4"/></svg></i>Merch</div>
+      <div><i><svg viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11.2A6.5 6.5 0 0 1 12 3.3a6.5 6.5 0 0 1 6.5 6.5C18.5 15 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/></svg></i>Piešťany</div>
+    </div>
+    <p class="cap" style="margin-top:3mm">Lineárne ikony, hrúbka čiary 1,7 px pri 24 px, zaoblené konce. Na webe čierne alebo biele, v highlightoch biele na červenom kruhu.</p>
+    <div class="eb" style="margin-top:7mm">09 · Fotografia</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr) 1.3fr;gap:4mm;margin-top:3mm;align-items:start">
+      <img class="post" src="a/p-1-08-3.jpg" alt=""><img class="post" src="a/p-2-02-3.jpg" alt=""><img class="post" src="a/p-3-07-1.jpg" alt=""><img class="post" src="a/p-2-01-2.jpg" alt="">
+      <ul class="ok" style="font-size:8.6pt"><li>Skutoční ľudia pri skutočnej práci.</li><li>Gastro a remeslo tmavé a teplé, zdravotníctvo svetlé a vzdušné.</li><li>Stopy práce sú v poriadku – prach, šmuha, pot.</li><li>Produkty na čistom pozadí, bez kolážových efektov.</li></ul>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>15</span></div>
+</section>
+
+<!-- 16 · FOTOGRAFIA – DETAIL -->
+<section class="pg dark">
+  <div class="in" style="display:grid;grid-template-columns:1fr 1fr;gap:10mm;align-items:center">
+    <div>
+      <div class="eb">09 · Fotografia</div>
+      <h2>Svetlo podľa prostredia</h2>
+      <p><b>Gastro a remeslo:</b> nízke teplé svetlo, tmavé pozadie, detail rúk a textúr. Dojem sústredenia a remesla.</p>
+      <p style="margin-top:3mm"><b>Zdravotníctvo a wellness:</b> denné svetlo, biela a svetlomodrá, pokoj a čistota.</p>
+      <p style="margin-top:3mm"><b>Piešťany:</b> slnko, Váh, kolonáda a mestské detaily – DAMI je súčasťou mesta.</p>
+    </div>
+    <div class="cols c3" style="gap:3mm">
+      <img class="post" src="a/p-1-03-3.jpg" alt=""><img class="post" src="a/p-3-06-1.jpg" alt=""><img class="post" src="a/p-2-09-3.jpg" alt="">
+      <img class="post" src="a/p-3-09-2.jpg" alt=""><img class="post" src="a/p-2-08-3.jpg" alt=""><img class="post" src="a/p-3-10-1.jpg" alt="">
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>16</span></div>
+</section>
+
+<!-- 17 · INSTAGRAM PROFIL -->
+<section class="pg dark">
+  <div class="in" style="display:grid;grid-template-columns:.9fr 1.4fr;gap:10mm;align-items:center">
+    <div>
+      <div class="eb">10 · Sociálne siete</div>
+      <h2>Instagram ako výklad predajne</h2>
+      <p>Profil <b>pracovne_odevy_dami</b> má jednotnú ikonu (prvok D), bio s adresou a odkazom na web a sedem highlightov podľa oborov. Feed je pripravený na <b>124 postov</b> – pri dvoch postoch týždenne na viac ako rok.</p>
+      <div class="cols c2" style="gap:3mm;margin-top:6mm">
+        <div class="kpi"><b>124</b><span>pripravených postov</span></div>
+        <div class="kpi"><b>~14</b><span>mesiacov pri 2× týždenne</span></div>
+      </div>
+    </div>
+    <img src="a/ig-header.jpg" class="shot" alt="">
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>17</span></div>
+</section>
+
+<!-- 18 · GRID -->
+<section class="pg dark">
+  <div class="in" style="display:grid;grid-template-columns:1fr 1.25fr;gap:10mm">
+    <div>
+      <div class="eb">10 · Sociálne siete</div>
+      <h2>Rytmus gridu</h2>
+      <div class="steps">
+        <div><i>1</i><span><b>Tmavé posty idú šikmo</b> cez grid – nikdy nie dva vedľa seba ani pod sebou.</span></div>
+        <div><i>2</i><span><b>Ucelené brandové vizuály</b> v pravidelnom pulze zhruba každý 8. post.</span></div>
+        <div><i>3</i><span><b>Rovnaký druh nesusedí</b> – dve predajne ani dva produkty vedľa seba.</span></div>
+        <div><i>4</i><span><b>Varianty a rovnaké nadpisy</b> sú vo feede ďaleko od seba.</span></div>
+        <div><i>5</i><span><b>Striedanie</b> typografie, fotiek, detailov a web mockupov.</span></div>
+        <div><i>6</i><span><b>Najsilnejšie posty hore</b> – prvé riadky rozhodujú, či niekto začne sledovať.</span></div>
+      </div>
+      <p class="cap" style="margin-top:5mm">Rytmus platí pre mobil (3 stĺpce) aj počítač (6 stĺpcov). Interaktívny plánovač: leumasdam.github.io/dami-ig-grid</p>
+    </div>
+    <img src="a/grid-top.jpg" style="width:100%;border-radius:2mm;align-self:center" alt="">
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>18</span></div>
+</section>
+
+<!-- 19 · TYPY POSTOV 1 -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">10 · Typy postov</div>
+    <h2>Obsahový mix</h2>
+    <div class="cols c5" style="gap:4mm">
+      <div><img class="post" src="a/p-1-10-1.jpg" alt=""><p class="cap"><b>Ľudia</b> · 9 postov – profesie, tímy, tváre.</p></div>
+      <div><img class="post" src="a/p-2-11-2.jpg" alt=""><p class="cap"><b>Zmena / deň</b> · 17 – nástup, obed, padla.</p></div>
+      <div><img class="post" src="a/p-2-06-1.jpg" alt=""><p class="cap"><b>Predajňa</b> · 11 – budova, výber, adresa.</p></div>
+      <div><img class="post" src="a/p-1-05-3.jpg" alt=""><p class="cap"><b>Produkt</b> · 10 – konkrétny kus a cena.</p></div>
+      <div><img class="post" src="a/p-2-04-2.jpg" alt=""><p class="cap"><b>Pre firmy</b> · 8 – logovanie a tímy.</p></div>
+    </div>
+    <div class="cols c5 row2" style="gap:4mm"><img class="post" src="a/p-2-02-3.jpg" alt=""><img class="post" src="a/p-3-06-1.jpg" alt=""><img class="post" src="a/p-H-09.jpg" alt=""><img class="post" src="a/p-2-07-2.jpg" alt=""><img class="post" src="a/p-2-11-3.jpg" alt=""></div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>19</span></div>
+</section>
+
+<!-- 20 · TYPY POSTOV 2 -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">10 · Typy postov</div>
+    <h2>Značka, mesto a ucelené vizuály</h2>
+    <div class="cols c5" style="gap:4mm">
+      <div><img class="post" src="a/p-2-01-1.jpg" alt=""><p class="cap"><b>Značka</b> · detaily, nášivka, D.</p></div>
+      <div><img class="post" src="a/p-1-01-1.jpg" alt=""><p class="cap"><b>Mesto</b> · Piešťany, kolonáda, Váh.</p></div>
+      <div><img class="post" src="a/p-1-11-1.jpg" alt=""><p class="cap"><b>Merch</b> · nálepky, placky, tašky.</p></div>
+      <div><img class="post" src="a/p-V-12.jpg" alt=""><p class="cap"><b>Ucelený vizuál</b> · 15 – odľahčenie feedu.</p></div>
+      <div><img class="post" src="a/p-W-03.jpg" alt=""><p class="cap"><b>Web mockup</b> · 6 – nový web a e-shop.</p></div>
+    </div>
+    <div class="cols c5 row2" style="gap:4mm"><img class="post" src="a/p-1-11-3.jpg" alt=""><img class="post" src="a/p-2-08-3.jpg" alt=""><img class="post" src="a/p-2-10-1.jpg" alt=""><img class="post" src="a/p-V-15.jpg" alt=""><img class="post" src="a/p-W-01.jpg" alt=""></div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>20</span></div>
+</section>
+
+<!-- 21 · WEB HOME -->
+<section class="pg">
+  <div class="in" style="display:grid;grid-template-columns:.8fr 1.6fr;gap:10mm;align-items:center">
+    <div>
+      <div class="eb">11 · Web</div>
+      <h2>Nový web DAMI</h2>
+      <p>Úvodná stránka rozprává ten istý príbeh ako Instagram: <b>kuchár pri práci</b>, nadpis „Oblečenie do práce, ktoré vydrží.“ a rukopisný podpis. Pod ním štyri obory, obľúbené produkty, predajňa v Piešťanoch, ponuka pre firmy a reálne značky v sortimente.</p>
+      <ul class="ok" style="margin-top:5mm"><li>Čierna hlavička, červené tlačidlá.</li><li>Papierové pozadie pre produkty.</li><li>Rovnaké ikony ako na Instagrame.</li></ul>
+    </div>
+    <img src="a/web-home.jpg" class="shot" alt="">
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>21</span></div>
+</section>
+
+<!-- 22 · WEB PODSTRÁNKY -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">11 · Web</div>
+    <h2>Kategórie s vlastnou atmosférou</h2>
+    <div class="cols c3" style="gap:5mm">
+      <div><img src="a/web-gastro.jpg" class="shot" alt=""><p class="cap"><b>Gastro a biele odevy</b> – tmavá kuchyňa, filtre podľa kategórie, značky a veľkosti.</p></div>
+      <div><img src="a/web-zdravotnictvo.jpg" class="shot" alt=""><p class="cap"><b>Zdravotníctvo a wellness</b> – svetlá, vzdušná sekcia s výhodami materiálov.</p></div>
+      <div><img src="a/web-obuv.jpg" class="shot" alt=""><p class="cap"><b>Pracovná a bezpečnostná obuv</b> – triedy S1–S3 a O1–O2 priamo v úvode.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>22</span></div>
+</section>
+
+<!-- 23 · MERCH -->
+<section class="pg">
+  <div class="in mid">
+    <div class="eb">12 · Merch a aplikácie</div>
+    <h2>Značka, ktorú si zákazník odnesie</h2>
+    <div class="cols c5" style="gap:4mm">
+      <div><img class="post" src="a/p-3-02-1.jpg" alt=""><p class="cap"><b>Taška</b> – čierna s bielym logom.</p></div>
+      <div><img class="post" src="a/p-V-13.jpg" alt=""><p class="cap"><b>Balenie</b> – krabica, páska s patternom, hodvábny papier.</p></div>
+      <div><img class="post" src="a/p-2-05-3.jpg" alt=""><p class="cap"><b>Nášivky a visačky</b> – D na oblečení.</p></div>
+      <div><img class="post" src="a/p-1-07-2.jpg" alt=""><p class="cap"><b>Placky a nálepky</b> – slogany do terénu.</p></div>
+      <div><img class="post" src="a/p-2-06-1.jpg" alt=""><p class="cap"><b>Polep predajne</b> – fasáda a výklad na Gaštanovej.</p></div>
+    </div>
+    <div class="cols c5 row2" style="gap:4mm"><img class="post" src="a/p-1-09-1.jpg" alt=""><img class="post" src="a/p-2-10-1.jpg" alt=""><img class="post" src="a/p-3-04-3.jpg" alt=""><img class="post" src="a/p-V-03.jpg" alt=""><img class="post" src="a/p-H-10.jpg" alt=""></div>
+  </div>
+  <div class="foot"><span>DAMI · Dizajn manuál</span><span>23</span></div>
+</section>
+
+<!-- 24 · ZÁVER -->
+<section class="pg redbg">
+  <div class="in" style="justify-content:space-between">
+    <img src="a/logo-white.png" style="width:36mm" alt="">
+    <div>
+      <p class="script" style="font-size:42pt;color:#fff;transform:rotate(-6deg);transform-origin:left;margin-bottom:12mm">Profesionáli nosia DAMI.</p>
+      <p style="color:#fff;font-size:11pt;line-height:1.6">DAMI pracovné odevy · Gaštanová 6396, 921 01 Piešťany<br>0902 482 244 · dami-pracovne-odevy.sk</p>
+    </div>
+  </div>
+  <img src="a/d-white.png" style="position:absolute;right:20mm;bottom:20mm;width:70mm" alt="">
+</section>
+
+</body>
+</html>
