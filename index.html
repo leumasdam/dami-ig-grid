@@ -184,6 +184,25 @@
   .gains b { color: #fff; }
   .note { font-size: 12px; color: #7d8590; margin-top: 14px; line-height: 1.5; }
   @media (max-width: 900px) { .plan__cols { grid-template-columns: 1fr; } }
+  /* ---------- príbeh ---------- */
+  .story { max-width: 1400px; margin: 0 auto; padding: 60px 16px 10px; border-top: 1px solid var(--line); }
+  .story__eb { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #ff5a60; }
+  .story h2 { font-size: clamp(30px, 4vw, 52px); line-height: 1.02; letter-spacing: -.03em; margin: 10px 0 18px; max-width: 900px; }
+  .story h2 em { font-style: normal; color: #ff5a60; }
+  .story__lead { font-size: 17px; line-height: 1.6; color: #d5d8dc; max-width: 820px; margin: 0 0 30px; }
+  .story__lead b { color: #fff; }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 26px; }
+  .pillar { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .pillar span { font-size: 12px; color: #ff5a60; font-weight: 700; letter-spacing: .08em; }
+  .pillar h3 { margin: 6px 0 8px; font-size: 17px; letter-spacing: -.01em; }
+  .pillar p { margin: 0; font-size: 13.5px; line-height: 1.55; color: #c9cdd2; }
+  .quote { border-left: 3px solid var(--red); padding: 6px 0 6px 18px; margin: 0 0 10px; font-size: 20px; line-height: 1.4; color: #fff; max-width: 860px; }
+  .quote small { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .presets { display: flex; gap: 6px; flex-wrap: wrap; }
+  .presets button { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; color: #dcdcdc; }
+  .presets button.on { background: #fff; color: #000; border-color: #fff; font-weight: 600; }
+  .reachbox { margin-top: 10px; display: grid; gap: 8px; font-size: 13px; color: #c9cdd2; line-height: 1.5; }
+  .reachbox b { color: #fff; }
 </style>
 </head>
 <body>
@@ -261,20 +280,44 @@
   <div class="grid" data-grid data-zone="grid"></div>
 </main>
 
+<section class="story">
+  <div class="story__eb">Príbeh za gridom</div>
+  <h2>Mesto oddychu stojí na ľuďoch, <em>ktorí makajú.</em></h2>
+  <p class="story__lead">Piešťany pozná celé Slovensko ako miesto, kam sa chodí oddýchnuť a dať sa dokopy. Symbolom mesta je <b>Barlolamač</b> – človek, ktorý zlomí barlu a vráti sa do života. Lenže za každým kúpeľným pobytom, obedom na kolonáde a vyžehleným obrusom stoja ľudia, ktorých návštevníci nevidia: <b>kuchári v hotelových kuchyniach, sestry a maséri v kúpeľoch, upratovačky, údržbári, murári na lešení, šoféri a skladníci</b>. Oni držia mesto v chode – a DAMI ich oblieka. Ruka so zdvihnutými prstami v logu nie je póza. Je to <b>víťazstvo po dobre odvedenej smene</b>. Padla.</p>
+  <blockquote class="quote">„Oblečenie, čo maká“ nie je slogan o látke. Je to poďakovanie ľuďom, na ktorých stojí každý deň – a sľub, že ich výbava vydrží rovnako ako oni.<small>Hlavná myšlienka komunikácie DAMI</small></blockquote>
+  <div class="pillars">
+    <div class="pillar"><span>01 · ĽUDIA</span><h3>Tí, ktorých nevidno</h3><p>Hrdinami feedu nie sú modelky, ale profesie: kuchár, sestra, mechanik, skladník. Posty „Pre každé povolanie“ a „Pre ľudí, ktorí makajú“ im vracajú tvár a hrdosť na robotu.</p></div>
+    <div class="pillar"><span>02 · SMENA</span><h3>Deň, ako ho poznajú</h3><p>Nástup 6:00, obed, padla 16:00, stopy práce na podlahe. Séria o smene hovorí jazykom zákazníkov – nie reklamy. Kto pracuje rukami, spozná sa v nej.</p></div>
+    <div class="pillar"><span>03 · PIEŠŤANY</span><h3>Lokálne a poctivo</h3><p>Kolonáda, Váh, zastávky, stĺpy s nálepkami a predajňa na Gaštanovej. DAMI nie je anonymný e-shop, ale rodinný obchod z mesta, kde si veľkosť vyskúšate a poradia vám osobne.</p></div>
+    <div class="pillar"><span>04 · DETAIL</span><h3>Malý detail, silná značka</h3><p>Nášivka D, gombík, visačka, šev. Detaily ukazujú remeslo a kvalitu bez veľkých slov – a z D robia symbol, ktorý si ľudia zapamätajú a ktorý nosia s hrdosťou.</p></div>
+    <div class="pillar"><span>05 · TÍM</span><h3>Od jedného kusu po celý tím</h3><p>Hotely, reštaurácie, ambulancie a firmy z regiónu: jednotné oblečenie s ich logom. Pracovné oblečenie ako súčasť identity celej prevádzky.</p></div>
+  </div>
+</section>
+
 <section class="plan" data-plan>
   <h2>Na ako dlho posty vystačia a čo prinesú</h2>
   <p>Posty sa zverejňujú odspodu gridu – posledný v gride ide von ako prvý, horný riadok je najnovší. Frekvenciu a predpoklady odhadu si môžete upraviť.</p>
+  <div class="plan__ctl">
+    <div class="presets" data-presets>
+      <button data-preset="new">Nový profil (0 sledovateľov)</button>
+      <button data-preset="small">Malá komunita (~300)</button>
+      <button data-preset="est">Zabehnutý profil (~1 500)</button>
+    </div>
+  </div>
   <div class="plan__ctl">
     <label>Postov týždenne <input type="number" min="1" max="7" step="1" data-pl="perWeek"></label>
     <label>Začiatok <input type="date" data-pl="start"></label>
     <label>Sledovatelia <input type="number" min="0" step="50" data-pl="followers"></label>
     <label>Dosah postu (% sledovateľov) <input type="number" min="1" max="100" step="1" data-pl="reach"></label>
-    <label title="Ľudia mimo sledovateľov – hashtagy, lokalita, zdieľania">Nové zobrazenia na post <input type="number" min="0" step="50" data-pl="extra"></label>
+    <label title="Ľudia mimo sledovateľov – lokalita, hashtagy, zdieľania, Reels">Organicky mimo sledovateľov / post <input type="number" min="0" step="25" data-pl="extra"></label>
+    <label>Reklama € / mesiac <input type="number" min="0" step="5" data-pl="ads"></label>
+    <label title="Orientačná cena za 1 000 zobrazení lokálnej reklamy na Slovensku">Cena za 1 000 zobrazení € <input type="number" min="0.5" step="0.5" data-pl="cpm"></label>
   </div>
   <div class="kpis" data-kpis></div>
   <div class="plan__cols">
     <div class="card"><h3>Kalendár zverejňovania</h3><div class="months" data-months></div></div>
     <div class="card"><h3>Obsahový mix</h3><div class="mix" data-mix></div><ul class="gains" data-gains></ul>
+      <div class="reachbox" data-reachbox></div>
       <p class="note">Dosah je orientačný odhad podľa zadaných predpokladov, nie garancia. Skutočné čísla ukáže štatistika Instagramu po prvých týždňoch – predpoklady sa potom dajú spresniť.</p></div>
   </div>
 </section>
@@ -544,14 +587,16 @@
 
 
   // ---------- plán a prínos ----------
-  const PL = { perWeek: 2, start: "", followers: 800, reach: 25, extra: 300, ...(saved.plan || {}) };
+  const PRESETS = { new: { followers: 0, reach: 25, extra: 60, ads: 20 }, small: { followers: 300, reach: 30, extra: 100, ads: 20 }, est: { followers: 1500, reach: 25, extra: 250, ads: 0 } };
+  const PL = { perWeek: 2, start: "", preset: "new", ...PRESETS.new, cpm: 3, ...(saved.plan || {}) };
+  $$("[data-preset]").forEach((b) => b.addEventListener("click", () => { Object.assign(PL, PRESETS[b.dataset.preset], { preset: b.dataset.preset }); $$("[data-pl]").forEach((el) => (el.value = PL[el.dataset.pl])); renderPlan(); save(); }));
   if (!PL.start) { const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); PL.start = d.toISOString().slice(0, 10); }
   const MES = ["január", "február", "marec", "apríl", "máj", "jún", "júl", "august", "september", "október", "november", "december"];
   const nf = (x) => Math.round(x).toLocaleString("sk-SK");
   $$("[data-pl]").forEach((el) => {
     el.value = PL[el.dataset.pl];
     el.addEventListener("input", () => {
-      PL[el.dataset.pl] = el.type === "date" ? el.value : Math.max(+el.min || 0, +el.value || 0);
+      PL[el.dataset.pl] = el.type === "date" ? el.value : Math.max(+el.min || 0, +el.value || 0); PL.preset = "";
       renderPlan(); save();
     });
   });
@@ -561,13 +606,15 @@
     // poradie zverejnenia: od spodu gridu nahor
     const pub = st.order.slice().reverse().map((pi, k) => ({ p: P[pi], d: new Date(start.getTime() + Math.round(k * gap) * 864e5) }));
     const end = pub[pub.length - 1].d, weeks = Math.ceil(n / pw), months = (end - start) / (864e5 * 30.44) + 7 / 30.44;
-    const perPost = PL.followers * PL.reach / 100 + PL.extra, total = perPost * n;
+    const perPost = PL.followers * PL.reach / 100 + PL.extra, organic = perPost * n;
+    const adViews = PL.cpm > 0 ? (PL.ads * months / PL.cpm) * 1000 : 0, total = organic + adViews;
+    $$("[data-preset]").forEach((b) => b.classList.toggle("on", b.dataset.preset === PL.preset));
     const cnt = (c) => st.order.filter((pi) => P[pi].cat === c).length;
     $("[data-kpis]").innerHTML = [
       [n, "pripravených postov", ""],
       [`${weeks} týždňov`, `pri ${pw} ${pw === 1 ? "poste" : "postoch"} týždenne`, `≈ ${months.toFixed(1).replace(".", ",")} mesiaca obsahu`],
       [end.toLocaleDateString("sk-SK", { day: "numeric", month: "long", year: "numeric" }), "posledný post", `prvý ${start.toLocaleDateString("sk-SK")}`],
-      [nf(total), "odhad zobrazení spolu", `≈ ${nf(perPost)} na jeden post`, "red"],
+      [nf(total), "odhad zobrazení spolu", `organicky ≈ ${nf(organic)}${adViews ? ` · reklama ≈ ${nf(adViews)}` : ""}`, "red"],
       [`+${n}`, "príbehov do Stories", "každý post sa dá zdieľať aj ako Story"],
     ].map(([b, t, sm, c]) => `<div class="kpi ${c || ""}"><b>${b}</b><span>${t}</span>${sm ? `<small>${sm}</small>` : ""}</div>`).join("");
     const by = {}; pub.forEach((x) => { const k = x.d.getFullYear() * 12 + x.d.getMonth(); (by[k] = by[k] || []).push(x.p); });
@@ -583,6 +630,9 @@
       `<b>${cnt("web")} postov predstavuje nový web</b> a online objednávku s vyzdvihnutím – presmerovanie z Instagramu na e-shop.`,
       `<b>${cnt("produkt") + cnt("kolekcia")} produktových postov</b> – konkrétne kúsky a ceny, ktoré sa dajú pustiť aj ako platená reklama.`,
     ].map((t) => `<li><span>${t}</span></li>`).join("");
+    $("[data-reachbox]").innerHTML = PL.followers < 100
+      ? `<div><b>Profil bez sledovateľov:</b> posty sa samé zobrazia hlavne ľuďom, ktorí profil navštívia. K novým ľuďom sa dostanú cez <b>označenie lokality Piešťany</b>, hashtagy, <b>Reels</b> (Instagram ich ukazuje aj nesledujúcim), zdieľanie do Stories a na Facebook, <b>označenie hotelov, reštaurácií a firiem</b>, ktoré DAMI oblieka, QR kód v predajni a malú reklamu cielenú na okolie Piešťan.</div><div>${PL.ads ? `Pri ${nf(PL.ads)} € mesačne na reklamu to je ≈ <b>${nf(adViews / Math.max(months, 1))} zobrazení mesačne</b> ľuďom z okolia – s nulovým štartom najrýchlejšia cesta k prvým sledovateľom.` : "Bez reklamy bude rast pomalý – odporúčame aspoň 15–30 € mesačne na najlepšie posty."}</div>`
+      : `<div>Pri ${nf(PL.followers)} sledovateľoch uvidí jeden post približne <b>${nf(PL.followers * PL.reach / 100)} z nich</b> a ďalších ≈ ${nf(PL.extra)} ľudí mimo profilu.${PL.ads ? ` Reklama za ${nf(PL.ads)} € mesačne pridá ≈ ${nf(adViews / Math.max(months, 1))} zobrazení mesačne.` : ""}</div>`;
   }
   // ---------- veľký náhľad ----------
   function openLb(t) {
