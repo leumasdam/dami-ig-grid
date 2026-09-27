@@ -29,16 +29,18 @@
     }
     if (o.accent) {
       // pravidelný pulz: medzi vizuálmi rovnaký odstup, prvý už v prvých riadkoch
-      const pos = []; for (let i = 0; i < n; i++) if (P[order[i]].cat === "vizual") pos.push(i);
+      for (const accCat of ["vizual", "web"]) {
+      const pos = []; for (let i = 0; i < n; i++) if (P[order[i]].cat === accCat) pos.push(i);
       if (pos.length > 1) {
         const ideal = n / pos.length;
         total += Math.pow(Math.max(0, pos[0] - ideal * 0.5), 2) * 0.08;
         for (let k = 1; k < pos.length; k++) {
           const gap = pos[k] - pos[k - 1];
-          if (gap < ideal * 0.55) hit(3, pos[k - 1], pos[k], "vizuály príliš blízko");
+          if (gap < ideal * 0.55) hit(3, pos[k - 1], pos[k], accCat === "web" ? "web mockupy príliš blízko" : "vizuály príliš blízko");
           total += Math.pow(gap - ideal, 2) * 0.12;
           for (const C of o.layouts) if (pos[k] % C === pos[k - 1] % C) total += 1.2; // nie stále v tom istom stĺpci
         }
+      }
       }
     }
     for (const C of o.layouts) {

@@ -178,7 +178,7 @@
         </select>
         <h4>Pravidlá</h4>
         <label><input type="checkbox" data-opt="top"><span>Najlepšie posty hore<small>★ silné a čisté posty na začiatok feedu, ▽ slabšie ku koncu. Hodnotenie zmeníš hviezdičkou na poste.</small></span></label>
-        <label><input type="checkbox" data-opt="accent"><span>Prestriedať ucelené vizuály<small>brandové vizuály (D, pattern, nášivka) v pravidelnom odstupe celým feedom – odľahčia grid</small></span></label>
+        <label><input type="checkbox" data-opt="accent"><span>Prestriedať ucelené vizuály a web<small>brandové vizuály (D, pattern) aj web mockupy v pravidelnom odstupe celým feedom – odľahčia grid</small></span></label>
         <label><input type="checkbox" data-opt="cat"><span>Rovnaký druh nesusedí<small>napr. dve „predajne“ vedľa seba ani pod sebou</small></span></label>
         <label><input type="checkbox" data-opt="dup"><span>Varianty a rovnaké nadpisy ďaleko od seba<small>„Od kuchyne až po stavbu“ 1, 2, 3… nie blízko</small></span></label>
         <label><input type="checkbox" data-opt="kind"><span>Striedať typografiu, fotky a objekty<small>žiadne 3 rovnaké typy v rade, texty nesusedia</small></span></label>
@@ -251,11 +251,11 @@
 (() => {
   const P = window.POSTS, byId = Object.fromEntries(P.map((p, i) => [p.id, i]));
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
-  const CAT = { mesto: ["Mesto", "#4fb3ff"], predajna: ["Predajňa", "#ffb020"], znacka: ["Značka", "#e3151d"], merch: ["Merch", "#ff6fb1"], smena: ["Zmena / deň", "#a78bfa"], ludia: ["Ľudia", "#3ecf6e"], produkt: ["Produkt", "#ffffff"], kolekcia: ["Kolekcia", "#2dd4bf"], "tim-firmy": ["Pre firmy", "#f97316"], vizual: ["Ucelený vizuál", "#e3151d"] };
+  const CAT = { mesto: ["Mesto", "#4fb3ff"], predajna: ["Predajňa", "#ffb020"], znacka: ["Značka", "#e3151d"], merch: ["Merch", "#ff6fb1"], smena: ["Zmena / deň", "#a78bfa"], ludia: ["Ľudia", "#3ecf6e"], produkt: ["Produkt", "#ffffff"], kolekcia: ["Kolekcia", "#2dd4bf"], "tim-firmy": ["Pre firmy", "#f97316"], vizual: ["Ucelený vizuál", "#e3151d"], web: ["Web mockup", "#38bdf8"] };
   const TONE = { dark: ["Tmavý", "#111", "#666"], light: ["Svetlý", "#f2f2f2"], red: ["Červený akcent", "#e3151d"] };
   const QUAL = { 3: ["★ Silný a čistý", "#fbbf24"], 2: ["Bežný", "#9ca3af"], 1: ["▽ Slabší", "#6b7280"] };
-  const KIND = { T: ["Typografia", "#fbbf24"], F: ["Fotka / scéna", "#60a5fa"], O: ["Objekt / detail", "#f472b6"], V: ["Ucelený vizuál", "#e3151d"] };
-  const KEY = "dami-grid-planner2-v5";
+  const KIND = { T: ["Typografia", "#fbbf24"], F: ["Fotka / scéna", "#60a5fa"], O: ["Objekt / detail", "#f472b6"], V: ["Ucelený vizuál", "#e3151d"], W: ["Web mockup", "#38bdf8"] };
+  const KEY = "dami-grid-planner2-v6";
   const url = new URLSearchParams(location.search);
   const VIEW = url.has("view");
   if (VIEW) document.body.classList.add("viewmode");
