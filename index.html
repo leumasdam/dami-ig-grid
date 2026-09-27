@@ -218,6 +218,7 @@
       <option value="q">Kvalita (★ / bežný / ▽)</option>
     </select>
     <button class="btn" data-toggle="num" title="Poradie zverejnenia">#</button>
+    <button class="btn" data-toggle="look" title="Zjednotený DAMI look: teplé tiene, papierové svetlá, filmové zrno">✦ DAMI look</button>
     <button class="btn" data-toggle="bad" title="Orámuje posty, ktoré porušujú pravidlá rytmu">Ukázať problémy</button>
   </div>
   <div class="grp">
@@ -389,14 +390,14 @@
   const st = {
     order: init.order, parked: init.parked,
     locked: new Set((saved.locked || []).map((id) => byId[id]).filter((i) => i !== undefined)),
-    cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true,
+    cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true, look: url.has("g") ? url.get("g") !== "0" : (saved.look ?? true),
     opt: { ...Rhythm.DEFAULTS, ...(saved.opt || {}) }, seed: saved.seed || 3,
     hidden: new Set(), undo: [], redo: [], sel: null, parkMin: !!saved.parkMin,
   };
 
   const save = () => {
     if (VIEW) return;
-    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, plan: typeof PL === "undefined" ? saved.plan : PL, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
+    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, look: st.look, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, plan: typeof PL === "undefined" ? saved.plan : PL, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
   };
   const toast = (t) => { const el = $("[data-toast]"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); };
   const snap = () => ({ order: st.order.slice(), parked: st.parked.slice() });
@@ -445,7 +446,7 @@
          <button class="lock" data-lock="${pi}" title="${st.locked.has(pi) ? "Odomknúť" : "Zamknúť na mieste"}"><svg viewBox="0 0 24 24">${st.locked.has(pi) ? LOCK_ON : LOCK_OFF}</svg></button>`
       : `<button data-unpark="${pos}" title="Vrátiť na koniec gridu">⤒</button>`;
     return `<div class="${cls}" draggable="${!VIEW}" data-zone="${zone}" data-pos="${pos}" title="${p.title}">
-      <img src="thumbs/${p.id}.webp" alt="${p.title}" loading="lazy">
+      <img src="${st.look ? "thumbs-g" : "thumbs"}/${p.id}.webp" alt="${p.title}" loading="lazy">
       ${inGrid ? `<span class="num">${pos + 1}</span>` : ""}
       <span class="ctl">${ctl}</span>
       ${t ? `<span class="tag"><i style="background:${t[1]}"></i>${t[0]} · ${p.title}</span>` : ""}
@@ -476,6 +477,7 @@
     $("[data-view]").value = st.view;
     $("[data-toggle=num]").classList.toggle("btn--blue", st.num);
     $("[data-toggle=bad]").classList.toggle("btn--blue", st.bad);
+    $("[data-toggle=look]").classList.toggle("btn--blue", st.look);
     $("[data-act=undo]").disabled = !st.undo.length; $("[data-act=redo]").disabled = !st.redo.length;
     $$("[data-opt]").forEach((el) => { if (el.type === "checkbox") el.checked = !!st.opt[el.dataset.opt]; else el.value = st.opt[el.dataset.opt]; });
     $$("[data-layout]").forEach((el) => (el.checked = st.opt.layouts.includes(+el.dataset.layout)));
@@ -549,7 +551,7 @@
     const seg = e.target.closest("[data-seg] button");
     if (seg) { const k = seg.parentElement.dataset.seg; st[k] = k === "cols" ? +seg.dataset.v : seg.dataset.v; st.sel = null; render(); save(); return; }
     const tg = e.target.closest("[data-toggle]");
-    if (tg) { st[tg.dataset.toggle] = !st[tg.dataset.toggle]; render(); save(); return; }
+    if (tg) { st[tg.dataset.toggle] = !st[tg.dataset.toggle]; render(); save(); if (tg.dataset.toggle === "look") { renderPlan(); toast(st.look ? "DAMI look zapnutý" : "Pôvodné posty"); } return; }
     const leg = e.target.closest("[data-leg]");
     if (leg) { const k = leg.dataset.leg; st.hidden.has(k) ? st.hidden.delete(k) : st.hidden.add(k); render(); return; }
 
@@ -577,7 +579,7 @@
       }, 30);
     }
     if (act === "share") {
-      const link = `${location.origin === "null" ? "file://" : location.origin}${location.pathname}?view&cols=${st.cols}&o=${enc(st.order)}${st.parked.length ? "~" + enc(st.parked) : ""}`;
+      const link = `${location.origin === "null" ? "file://" : location.origin}${location.pathname}?view&cols=${st.cols}&g=${st.look ? 1 : 0}&o=${enc(st.order)}${st.parked.length ? "~" + enc(st.parked) : ""}`;
       navigator.clipboard?.writeText(link).then(() => toast("Odkaz skopírovaný – klient uvidí presne toto poradie, bez ovládania"), () => prompt("Skopíruj odkaz:", link));
     }
   });
@@ -618,7 +620,7 @@
       [`+${n}`, "príbehov do Stories", "každý post sa dá zdieľať aj ako Story"],
     ].map(([b, t, sm, c]) => `<div class="kpi ${c || ""}"><b>${b}</b><span>${t}</span>${sm ? `<small>${sm}</small>` : ""}</div>`).join("");
     const by = {}; pub.forEach((x) => { const k = x.d.getFullYear() * 12 + x.d.getMonth(); (by[k] = by[k] || []).push(x.p); });
-    $("[data-months]").innerHTML = Object.entries(by).map(([k, ps]) => `<div class="month"><div class="month__n">${MES[k % 12]} ${Math.floor(k / 12)}<small>${ps.length} postov</small></div><div class="month__t">${ps.map((p) => `<img src="thumbs/${p.id}.webp" alt="" title="${p.title}" loading="lazy">`).join("")}</div></div>`).join("");
+    $("[data-months]").innerHTML = Object.entries(by).map(([k, ps]) => `<div class="month"><div class="month__n">${MES[k % 12]} ${Math.floor(k / 12)}<small>${ps.length} postov</small></div><div class="month__t">${ps.map((p) => `<img src="${st.look ? "thumbs-g" : "thumbs"}/${p.id}.webp" alt="" title="${p.title}" loading="lazy">`).join("")}</div></div>`).join("");
     const cats = Object.keys(CAT).map((c) => [c, cnt(c)]).filter(([, v]) => v).sort((a, b) => b[1] - a[1]);
     $("[data-mix]").innerHTML = cats.map(([c, v]) => `<div><span>${CAT[c][0]}</span><i style="--w:${(v / n) * 100}%;--c:${CAT[c][1]}"></i><em>${v}</em></div>`).join("");
     const shop = cnt("predajna") + cnt("mesto");
@@ -637,7 +639,7 @@
   // ---------- veľký náhľad ----------
   function openLb(t) {
     const pi = t.dataset.zone === "park" ? st.parked[+t.dataset.pos] : st.order[+t.dataset.pos], p = P[pi], lb = $("[data-lb]");
-    lb.querySelector("img").src = `export/${p.id}.jpg`;
+    lb.querySelector("img").src = `${st.look ? "export-g" : "export"}/${p.id}.jpg`;
     lb.querySelector("p").textContent = VIEW ? `${p.title}  ·  Esc zavrie` : `${t.dataset.zone === "park" ? "Odložené" : "#" + (+t.dataset.pos + 1)} · ${CAT[p.cat][0]} · ${p.title} · ${TONE[p.tone][0]} · ${KIND[p.kind][0]}  (Esc zavrie)`;
     lb.classList.add("on");
   }

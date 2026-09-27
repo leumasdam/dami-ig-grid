@@ -1,2 +1,4 @@
 _plan.cjs
 posts.json
+_*.py
+_*.cjs
