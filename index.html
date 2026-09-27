@@ -149,7 +149,7 @@
   body.viewmode { padding-bottom: 0; }
   .viewmode .bar, .viewmode .help, .viewmode .park, .viewmode .ctl, .viewmode .legend, .viewmode .issues { display: none !important; }
   .viewmode .tile { cursor: zoom-in; }
-  @media (max-width: 760px) { .head { flex-direction: column; text-align: center; } .stats { justify-content: center; } .tabs { gap: 50px; } .acts span { width: 45%; } .ig { padding-top: 20px; } }
+  @media (max-width: 760px) { .head { flex-direction: column; text-align: center; } .stats { justify-content: center; } .tabs { gap: 50px; } .acts span { width: 45%; } .ig { padding-top: 20px; } .hl { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 18px; scrollbar-width: none; } .hl div { flex: none; } .hl::-webkit-scrollbar { display: none; } .avatar { width: 110px; height: 110px; } .avatar img { width: 74px; margin-left: 12px; } }
 </style>
 </head>
 <body>
@@ -290,7 +290,7 @@
   const st = {
     order: init.order, parked: init.parked,
     locked: new Set((saved.locked || []).map((id) => byId[id]).filter((i) => i !== undefined)),
-    cols: +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true,
+    cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true,
     opt: { ...Rhythm.DEFAULTS, ...(saved.opt || {}) }, seed: saved.seed || 3,
     hidden: new Set(), undo: [], redo: [], sel: null, parkMin: !!saved.parkMin,
   };
