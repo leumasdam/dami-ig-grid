@@ -255,7 +255,7 @@
   const TONE = { dark: ["Tmavý", "#111", "#666"], light: ["Svetlý", "#f2f2f2"], red: ["Červený akcent", "#e3151d"] };
   const QUAL = { 3: ["★ Silný a čistý", "#fbbf24"], 2: ["Bežný", "#9ca3af"], 1: ["▽ Slabší", "#6b7280"] };
   const KIND = { T: ["Typografia", "#fbbf24"], F: ["Fotka / scéna", "#60a5fa"], O: ["Objekt / detail", "#f472b6"], V: ["Ucelený vizuál", "#e3151d"] };
-  const KEY = "dami-grid-planner2-v4";
+  const KEY = "dami-grid-planner2-v5";
   const url = new URLSearchParams(location.search);
   const VIEW = url.has("view");
   if (VIEW) document.body.classList.add("viewmode");
@@ -277,6 +277,7 @@
   const saved = VIEW ? {} : load();
   Object.entries(saved.q || {}).forEach(([id, q]) => { if (byId[id] !== undefined) P[byId[id]].q = q; });
   const proposal = (window.PROPOSAL || []).map((id) => byId[id]);
+  const proposalParked = (window.PROPOSAL_PARKED || []).map((id) => byId[id]);
   let init;
   if (url.get("o")) {
     const [a, b = ""] = url.get("o").split("~");
@@ -285,7 +286,7 @@
   } else if (Array.isArray(saved.order)) {
     init = normalize(saved.order.map((id) => byId[id]), (saved.parked || []).map((id) => byId[id]));
   } else {
-    init = normalize(proposal, []);
+    init = normalize(proposal, proposalParked);
   }
   const st = {
     order: init.order, parked: init.parked,
@@ -465,7 +466,7 @@
     if (!act) return;
     if (act === "undo" && st.undo.length) { st.redo.push(snap()); Object.assign(st, st.undo.pop()); render(); save(); }
     if (act === "redo" && st.redo.length) { st.undo.push(snap()); Object.assign(st, st.redo.pop()); render(); save(); }
-    if (act === "proposal") { const n = normalize(proposal, []); commit(n, "Návrh Claude – najlepšie posty hore, vizuály prestriedané"); }
+    if (act === "proposal") { const n = normalize(proposal, proposalParked); commit(n, "Návrh Claude – obľúbený rytmus, novšie posty sú v odložených"); }
     if (act === "optimize" || act === "variant") {
       if (act === "variant") st.seed = (st.seed * 7919 + 13) % 100000;
       if (!st.opt.layouts.length) return toast("Vyber aspoň mobil alebo PC");
