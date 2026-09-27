@@ -219,6 +219,7 @@
     </select>
     <button class="btn" data-toggle="num" title="Poradie zverejnenia">#</button>
     <div class="seg" data-seg="look" title="Zjednotený vzhľad postov"><button data-v="off">Pôvodné</button><button data-v="g">Papier</button><button data-v="c">Dielňa</button></div>
+    <button class="btn" data-toggle="depth" title="Hĺbka: jemne rozmazané okraje a pozadie fotiek, text a logo ostávajú ostré">◎ Hĺbka</button>
     <button class="btn" data-toggle="bad" title="Orámuje posty, ktoré porušujú pravidlá rytmu">Ukázať problémy</button>
   </div>
   <div class="grp">
@@ -390,15 +391,15 @@
   const st = {
     order: init.order, parked: init.parked,
     locked: new Set((saved.locked || []).map((id) => byId[id]).filter((i) => i !== undefined)),
-    cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true, look: ["off", "g", "c"].includes(url.get("g")) ? url.get("g") : url.get("g") === "1" ? "g" : url.get("g") === "0" ? "off" : (typeof saved.look === "string" ? saved.look : saved.look === false ? "off" : "g"),
+    cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true, depth: url.has("d") ? url.get("d") === "1" : !!saved.depth, look: ["off", "g", "c"].includes(url.get("g")) ? url.get("g") : url.get("g") === "1" ? "g" : url.get("g") === "0" ? "off" : (typeof saved.look === "string" ? saved.look : saved.look === false ? "off" : "g"),
     opt: { ...Rhythm.DEFAULTS, ...(saved.opt || {}) }, seed: saved.seed || 3,
     hidden: new Set(), undo: [], redo: [], sel: null, parkMin: !!saved.parkMin,
   };
 
-  const dir = (base) => (st.look === "off" ? base : `${base}-${st.look}`);
+  const dir = (base) => { const k = (st.look === "off" ? "" : st.look) + (st.depth ? "d" : ""); return k ? `${base}-${k}` : base; };
   const save = () => {
     if (VIEW) return;
-    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, look: st.look, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, plan: typeof PL === "undefined" ? saved.plan : PL, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
+    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, look: st.look, depth: st.depth, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, plan: typeof PL === "undefined" ? saved.plan : PL, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
   };
   const toast = (t) => { const el = $("[data-toast]"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); };
   const snap = () => ({ order: st.order.slice(), parked: st.parked.slice() });
@@ -478,6 +479,7 @@
     $("[data-view]").value = st.view;
     $("[data-toggle=num]").classList.toggle("btn--blue", st.num);
     $("[data-toggle=bad]").classList.toggle("btn--blue", st.bad);
+    $("[data-toggle=depth]").classList.toggle("btn--blue", st.depth);
     $$("[data-seg=look] button").forEach((b) => b.classList.toggle("on", b.dataset.v === st.look));
     $("[data-act=undo]").disabled = !st.undo.length; $("[data-act=redo]").disabled = !st.redo.length;
     $$("[data-opt]").forEach((el) => { if (el.type === "checkbox") el.checked = !!st.opt[el.dataset.opt]; else el.value = st.opt[el.dataset.opt]; });
@@ -552,7 +554,7 @@
     const seg = e.target.closest("[data-seg] button");
     if (seg) { const k = seg.parentElement.dataset.seg; st[k] = k === "cols" ? +seg.dataset.v : seg.dataset.v; st.sel = null; render(); save(); if (k === "look") renderPlan(); return; }
     const tg = e.target.closest("[data-toggle]");
-    if (tg) { st[tg.dataset.toggle] = !st[tg.dataset.toggle]; render(); save(); return; }
+    if (tg) { st[tg.dataset.toggle] = !st[tg.dataset.toggle]; render(); save(); if (tg.dataset.toggle === "depth") renderPlan(); return; }
     const leg = e.target.closest("[data-leg]");
     if (leg) { const k = leg.dataset.leg; st.hidden.has(k) ? st.hidden.delete(k) : st.hidden.add(k); render(); return; }
 
@@ -580,7 +582,7 @@
       }, 30);
     }
     if (act === "share") {
-      const link = `${location.origin === "null" ? "file://" : location.origin}${location.pathname}?view&cols=${st.cols}&g=${st.look}&o=${enc(st.order)}${st.parked.length ? "~" + enc(st.parked) : ""}`;
+      const link = `${location.origin === "null" ? "file://" : location.origin}${location.pathname}?view&cols=${st.cols}&g=${st.look}&d=${st.depth ? 1 : 0}&o=${enc(st.order)}${st.parked.length ? "~" + enc(st.parked) : ""}`;
       navigator.clipboard?.writeText(link).then(() => toast("Odkaz skopírovaný – klient uvidí presne toto poradie, bez ovládania"), () => prompt("Skopíruj odkaz:", link));
     }
   });
