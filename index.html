@@ -203,6 +203,35 @@
   .presets button.on { background: #fff; color: #000; border-color: #fff; font-weight: 600; }
   .reachbox { margin-top: 10px; display: grid; gap: 8px; font-size: 13px; color: #c9cdd2; line-height: 1.5; }
   .reachbox b { color: #fff; }
+  /* ---------- mobil: lišta v jednom riadku so scrollom, nič nerozťahuje stránku ---------- */
+  html, body { overflow-x: hidden; }
+  @media (max-width: 760px) {
+    .bar__in { flex-wrap: nowrap; overflow-x: auto; gap: 8px 12px; padding: 8px 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .bar__in::-webkit-scrollbar { display: none; }
+    .bar__in > * { flex: none; }
+    .grp > span { display: none; }
+    .btn, .seg button, select { font-size: 12px; white-space: nowrap; }
+    .score { margin-left: 0; }
+    .rules__pop { position: fixed; left: 12px; right: 12px; top: 56px; width: auto; max-height: 70vh; overflow: auto; }
+    .ig { padding-left: 0; padding-right: 0; }
+    .head { padding: 10px 16px 18px; gap: 14px; }
+    .who h1 { font-size: 17px; justify-content: center; }
+    .stats { gap: 12px; font-size: 13px; flex-wrap: wrap; }
+    .bio { font-size: 13px; }
+    .acts span { width: 46%; padding: 8px; font-size: 13px; }
+    .tabs { gap: 0; justify-content: space-around; }
+    .help { font-size: 11px; }
+    .grid { gap: 2px; }
+    .plan, .story, .extras { padding-left: 14px; padding-right: 14px; }
+    .plan__ctl { gap: 10px 14px; }
+    .plan__ctl input { width: 76px; }
+    .month { grid-template-columns: 70px 1fr; }
+    .mix div { grid-template-columns: 96px 1fr 28px; }
+    .park__box { padding: 8px 10px 10px; }
+    .park__hd p { display: none; }
+    .park .tile { flex-basis: 84px; }
+    body { padding-bottom: 170px; }
+  }
 </style>
 </head>
 <body>
@@ -393,7 +422,7 @@
     locked: new Set((saved.locked || []).map((id) => byId[id]).filter((i) => i !== undefined)),
     cols: innerWidth < 760 ? 3 : +(url.get("cols") || saved.cols || 6), mode: saved.mode || "move", view: saved.view || "none", num: !!saved.num, bad: saved.bad ?? true, depth: url.has("d") ? url.get("d") === "1" : !!saved.depth, look: ["off", "g", "c"].includes(url.get("g")) ? url.get("g") : url.get("g") === "1" ? "g" : url.get("g") === "0" ? "off" : (typeof saved.look === "string" ? saved.look : saved.look === false ? "off" : "g"),
     opt: { ...Rhythm.DEFAULTS, ...(saved.opt || {}) }, seed: saved.seed || 3,
-    hidden: new Set(), undo: [], redo: [], sel: null, parkMin: !!saved.parkMin,
+    hidden: new Set(), undo: [], redo: [], sel: null, parkMin: saved.parkMin ?? innerWidth < 760,
   };
 
   const dir = (base) => { const k = (st.look === "off" ? "" : st.look) + (st.depth ? "d" : ""); return k ? `${base}-${k}` : base; };
