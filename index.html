@@ -150,6 +150,40 @@
   .viewmode .bar, .viewmode .help, .viewmode .park, .viewmode .ctl, .viewmode .legend, .viewmode .issues { display: none !important; }
   .viewmode .tile { cursor: zoom-in; }
   @media (max-width: 760px) { .head { flex-direction: column; text-align: center; } .stats { justify-content: center; } .tabs { gap: 50px; } .acts span { width: 45%; } .ig { padding-top: 20px; } .hl { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 18px; scrollbar-width: none; } .hl div { flex: none; } .hl::-webkit-scrollbar { display: none; } .avatar { width: 110px; height: 110px; } .avatar img { width: 74px; margin-left: 12px; } .viewmode [data-grid] { grid-template-columns: repeat(3, 1fr); } .viewmode .ig { max-width: 100%; } }
+  /* ---------- plán a prínos ---------- */
+  .plan { max-width: 1400px; margin: 0 auto; padding: 50px 16px 20px; border-top: 1px solid var(--line); }
+  .plan h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
+  .plan > p { color: var(--muted); margin: 0 0 22px; max-width: 760px; line-height: 1.5; }
+  .plan__ctl { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; margin-bottom: 22px; font-size: 13px; color: var(--muted); }
+  .plan__ctl label { display: flex; gap: 8px; align-items: center; }
+  .plan__ctl input { background: var(--panel-2); border: 0; border-radius: 8px; padding: 6px 8px; font-size: 13px; color: #fff; width: 90px; }
+  .plan__ctl input[type=date] { width: 150px; color-scheme: dark; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 26px; }
+  .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .kpi b { display: block; font-size: 28px; letter-spacing: -.02em; line-height: 1.1; }
+  .kpi span { font-size: 13px; color: var(--muted); }
+  .kpi small { display: block; font-size: 12px; color: #7d8590; margin-top: 6px; }
+  .kpi.red b { color: #ff5a60; }
+  .plan__cols { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .card h3 { margin: 0 0 14px; font-size: 15px; }
+  .months { display: grid; gap: 10px; max-height: 560px; overflow: auto; padding-right: 4px; }
+  .month { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: center; }
+  .month__n { font-size: 13px; font-weight: 600; }
+  .month__n small { display: block; color: var(--muted); font-weight: 400; font-size: 11px; }
+  .month__t { display: flex; flex-wrap: wrap; gap: 3px; }
+  .month__t img { width: 34px; height: 42px; object-fit: cover; border-radius: 3px; }
+  .mix { display: grid; gap: 9px; }
+  .mix div { display: grid; grid-template-columns: 120px 1fr 34px; gap: 10px; align-items: center; font-size: 13px; }
+  .mix i { height: 8px; border-radius: 99px; background: var(--panel-2); position: relative; overflow: hidden; }
+  .mix i::after { content: ""; position: absolute; inset: 0; width: var(--w); background: var(--c); border-radius: 99px; }
+  .mix em { font-style: normal; color: var(--muted); text-align: right; }
+  .gains { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .gains li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 13.5px; line-height: 1.45; color: #dcdcdc; }
+  .gains li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+  .gains b { color: #fff; }
+  .note { font-size: 12px; color: #7d8590; margin-top: 14px; line-height: 1.5; }
+  @media (max-width: 900px) { .plan__cols { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -227,6 +261,24 @@
   <div class="grid" data-grid data-zone="grid"></div>
 </main>
 
+<section class="plan" data-plan>
+  <h2>Na ako dlho posty vystačia a čo prinesú</h2>
+  <p>Posty sa zverejňujú odspodu gridu – posledný v gride ide von ako prvý, horný riadok je najnovší. Frekvenciu a predpoklady odhadu si môžete upraviť.</p>
+  <div class="plan__ctl">
+    <label>Postov týždenne <input type="number" min="1" max="7" step="1" data-pl="perWeek"></label>
+    <label>Začiatok <input type="date" data-pl="start"></label>
+    <label>Sledovatelia <input type="number" min="0" step="50" data-pl="followers"></label>
+    <label>Dosah postu (% sledovateľov) <input type="number" min="1" max="100" step="1" data-pl="reach"></label>
+    <label title="Ľudia mimo sledovateľov – hashtagy, lokalita, zdieľania">Nové zobrazenia na post <input type="number" min="0" step="50" data-pl="extra"></label>
+  </div>
+  <div class="kpis" data-kpis></div>
+  <div class="plan__cols">
+    <div class="card"><h3>Kalendár zverejňovania</h3><div class="months" data-months></div></div>
+    <div class="card"><h3>Obsahový mix</h3><div class="mix" data-mix></div><ul class="gains" data-gains></ul>
+      <p class="note">Dosah je orientačný odhad podľa zadaných predpokladov, nie garancia. Skutočné čísla ukáže štatistika Instagramu po prvých týždňoch – predpoklady sa potom dajú spresniť.</p></div>
+  </div>
+</section>
+
 <section class="park" data-park-wrap aria-label="Odložené mimo gridu">
   <div class="park__box" data-zone="park">
     <div class="park__hd" data-park-toggle>
@@ -301,7 +353,7 @@
 
   const save = () => {
     if (VIEW) return;
-    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
+    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, plan: typeof PL === "undefined" ? saved.plan : PL, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
   };
   const toast = (t) => { const el = $("[data-toast]"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); };
   const snap = () => ({ order: st.order.slice(), parked: st.parked.slice() });
@@ -309,6 +361,7 @@
     st.undo.push(snap()); if (st.undo.length > 80) st.undo.shift(); st.redo = [];
     st.order = next.order ?? st.order; st.parked = next.parked ?? st.parked;
     render(); save(); if (msg) toast(msg);
+    if (typeof renderPlan === "function") renderPlan();
   };
 
   // ---------- highlighty ----------
@@ -489,6 +542,48 @@
   $$("[data-opt]").forEach((el) => el.addEventListener("change", () => { st.opt[el.dataset.opt] = el.type === "checkbox" ? el.checked : el.value; render(); save(); }));
   $$("[data-layout]").forEach((el) => el.addEventListener("change", () => { st.opt.layouts = $$("[data-layout]").filter((x) => x.checked).map((x) => +x.dataset.layout); render(); save(); }));
 
+
+  // ---------- plán a prínos ----------
+  const PL = { perWeek: 2, start: "", followers: 800, reach: 25, extra: 300, ...(saved.plan || {}) };
+  if (!PL.start) { const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); PL.start = d.toISOString().slice(0, 10); }
+  const MES = ["január", "február", "marec", "apríl", "máj", "jún", "júl", "august", "september", "október", "november", "december"];
+  const nf = (x) => Math.round(x).toLocaleString("sk-SK");
+  $$("[data-pl]").forEach((el) => {
+    el.value = PL[el.dataset.pl];
+    el.addEventListener("input", () => {
+      PL[el.dataset.pl] = el.type === "date" ? el.value : Math.max(+el.min || 0, +el.value || 0);
+      renderPlan(); save();
+    });
+  });
+  function renderPlan() {
+    const n = st.order.length; if (!n || !PL.start) return;
+    const pw = Math.min(7, Math.max(1, PL.perWeek || 2)), gap = 7 / pw, start = new Date(PL.start + "T12:00:00");
+    // poradie zverejnenia: od spodu gridu nahor
+    const pub = st.order.slice().reverse().map((pi, k) => ({ p: P[pi], d: new Date(start.getTime() + Math.round(k * gap) * 864e5) }));
+    const end = pub[pub.length - 1].d, weeks = Math.ceil(n / pw), months = (end - start) / (864e5 * 30.44) + 7 / 30.44;
+    const perPost = PL.followers * PL.reach / 100 + PL.extra, total = perPost * n;
+    const cnt = (c) => st.order.filter((pi) => P[pi].cat === c).length;
+    $("[data-kpis]").innerHTML = [
+      [n, "pripravených postov", ""],
+      [`${weeks} týždňov`, `pri ${pw} ${pw === 1 ? "poste" : "postoch"} týždenne`, `≈ ${months.toFixed(1).replace(".", ",")} mesiaca obsahu`],
+      [end.toLocaleDateString("sk-SK", { day: "numeric", month: "long", year: "numeric" }), "posledný post", `prvý ${start.toLocaleDateString("sk-SK")}`],
+      [nf(total), "odhad zobrazení spolu", `≈ ${nf(perPost)} na jeden post`, "red"],
+      [`+${n}`, "príbehov do Stories", "každý post sa dá zdieľať aj ako Story"],
+    ].map(([b, t, sm, c]) => `<div class="kpi ${c || ""}"><b>${b}</b><span>${t}</span>${sm ? `<small>${sm}</small>` : ""}</div>`).join("");
+    const by = {}; pub.forEach((x) => { const k = x.d.getFullYear() * 12 + x.d.getMonth(); (by[k] = by[k] || []).push(x.p); });
+    $("[data-months]").innerHTML = Object.entries(by).map(([k, ps]) => `<div class="month"><div class="month__n">${MES[k % 12]} ${Math.floor(k / 12)}<small>${ps.length} postov</small></div><div class="month__t">${ps.map((p) => `<img src="thumbs/${p.id}.webp" alt="" title="${p.title}" loading="lazy">`).join("")}</div></div>`).join("");
+    const cats = Object.keys(CAT).map((c) => [c, cnt(c)]).filter(([, v]) => v).sort((a, b) => b[1] - a[1]);
+    $("[data-mix]").innerHTML = cats.map(([c, v]) => `<div><span>${CAT[c][0]}</span><i style="--w:${(v / n) * 100}%;--c:${CAT[c][1]}"></i><em>${v}</em></div>`).join("");
+    const shop = cnt("predajna") + cnt("mesto");
+    $("[data-gains]").innerHTML = [
+      `<b>Pravidelnosť ${pw}× týždenne takmer ${Math.round(months)} mesiacov</b> – profil nepôsobí opustene a Instagram uprednostňuje účty, ktoré postujú konzistentne.`,
+      `<b>Jednotný vizuálny štýl</b> – farby, D symbol a typografia sa opakujú, DAMI je rozpoznateľné už v náhľade feedu.`,
+      `<b>${shop} postov ťahá ľudí do predajne</b> v Piešťanoch (predajňa, mesto) – lokálne povedomie a osobné nákupy.`,
+      `<b>${cnt("tim-firmy")} postov pre firmy</b> – logovanie, firemné ceny a vybavenie celých tímov; dopyty s vyššou hodnotou.`,
+      `<b>${cnt("web")} postov predstavuje nový web</b> a online objednávku s vyzdvihnutím – presmerovanie z Instagramu na e-shop.`,
+      `<b>${cnt("produkt") + cnt("kolekcia")} produktových postov</b> – konkrétne kúsky a ceny, ktoré sa dajú pustiť aj ako platená reklama.`,
+    ].map((t) => `<li><span>${t}</span></li>`).join("");
+  }
   // ---------- veľký náhľad ----------
   function openLb(t) {
     const pi = t.dataset.zone === "park" ? st.parked[+t.dataset.pos] : st.order[+t.dataset.pos], p = P[pi], lb = $("[data-lb]");
@@ -541,6 +636,7 @@
 
   setPark(st.parkMin);
   render();
+  renderPlan();
 })();
 </script>
 </body>
