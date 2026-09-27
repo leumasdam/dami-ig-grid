@@ -278,12 +278,15 @@
   Object.entries(saved.q || {}).forEach(([id, q]) => { if (byId[id] !== undefined) P[byId[id]].q = q; });
   const proposal = (window.PROPOSAL || []).map((id) => byId[id]);
   const proposalParked = (window.PROPOSAL_PARKED || []).map((id) => byId[id]);
+  // podpis návrhu – keď Claude pošle nový návrh, načíta sa namiesto starého uloženého poradia
+  const PV = (window.PROPOSAL || []).join(",") + "|" + (window.PROPOSAL_PARKED || []).join(",");
+  const freshProposal = saved.pv !== PV;
   let init;
   if (url.get("o")) {
     const [a, b = ""] = url.get("o").split("~");
     init = normalize(dec(a), dec(b));
     if (!VIEW) history.replaceState(null, "", location.pathname); // odkaz sa načíta raz, potom platí lokálne uloženie
-  } else if (Array.isArray(saved.order)) {
+  } else if (Array.isArray(saved.order) && !freshProposal) {
     init = normalize(saved.order.map((id) => byId[id]), (saved.parked || []).map((id) => byId[id]));
   } else {
     init = normalize(proposal, proposalParked);
@@ -298,7 +301,7 @@
 
   const save = () => {
     if (VIEW) return;
-    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, opt: st.opt, seed: st.seed, parkMin: st.parkMin, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
+    try { localStorage.setItem(KEY, JSON.stringify({ order: st.order.map((i) => P[i].id), parked: st.parked.map((i) => P[i].id), locked: [...st.locked].map((i) => P[i].id), cols: st.cols, mode: st.mode, view: st.view, num: st.num, bad: st.bad, opt: st.opt, seed: st.seed, parkMin: st.parkMin, pv: PV, q: Object.fromEntries(P.map((p) => [p.id, p.q])) })); } catch {}
   };
   const toast = (t) => { const el = $("[data-toast]"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); };
   const snap = () => ({ order: st.order.slice(), parked: st.parked.slice() });
